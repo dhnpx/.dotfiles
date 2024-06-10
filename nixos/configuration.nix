@@ -2,12 +2,13 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, inputs, ... }:
+{ config, lib, pkgs, options, ... }:
 
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./laptop.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -24,13 +25,13 @@
     };
   };
 
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  #boot.initrd.kernelModules = [ "amdgpu" ];
 
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-
+  networking.timeServers = options.networking.timeServers.default;
   # Set your time zone.
   time.timeZone = "America/Los_Angeles";
   time.hardwareClockInLocalTime = true;
@@ -69,6 +70,7 @@
 
   nixpkgs.config.allowUnfree = true;
 
+  virtualisation.libvirtd.enable = true;
   
 
   # Configure keymap in X11
@@ -89,7 +91,11 @@
   users.users.hyoon = {
     isNormalUser = true;
     home = "/home/hyoon";
-    extraGroups = [ "wheel" "networkmanager" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ 
+      "wheel" 
+      "networkmanager" 
+      "libvirtd" 
+    ]; # Enable ‘sudo’ for the user.
     hashedPassword = "$6$Nv2vzi2yJnd.o1Ii$YqM6Z20xmFp3QuK1oX8j3rqoNNIaoP0GafGtTh4Asztw18GBygOECpWS2NnjnM0TpchVlGlytAVukFZx7a40S.";
     packages = with pkgs; [
     ];
@@ -123,10 +129,10 @@
     wget
     brave
     bitwarden-desktop
+    thunar
     librewolf
     thunderbird
-    protonvpn-gui
-    protonmail-bridge-gui
+    protonmail-bridge
     networkmanagerapplet
     nwg-look
     rofi-wayland
@@ -134,7 +140,6 @@
     waybar
     pwvucontrol
     polkit_gnome
-    bemenu
     wl-clipboard
     vesktop
     dunst
@@ -143,6 +148,7 @@
     opam
     unzip
     blanket
+    ventoy
     colloid-icon-theme
   ];
 
@@ -172,9 +178,8 @@
     enable = true;
   };
 
-  programs.seahorse = {
-    enable = true;
-  };
+  programs.seahorse.enable = true;
+  programs.virt-manager.enable = true;
 
 
   # Some programs need SUID wrappers, can be configured further or are
