@@ -9,9 +9,11 @@ rm -rf ~/.wezterm.lua
 
 if [ "$mode" = "laptop" ]; then
     ln -sf ~/.dotfiles/hypr/laptop ~/.config/hypr
+    ln -sf ~/.dotfiles/hypr/hyprpaper.conf ~/.config/hypr/
 else
     ln -sf ~/.dotfiles/hypr ~/.config/hypr
 fi
+
 
 ln -sf ~/.dotfiles/nvim ~/.config/nvim
 ln -sf ~/.dotfiles/waybar ~/.config/waybar

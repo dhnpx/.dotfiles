@@ -9,6 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./laptop.nix
+      <home-manager/nixos>
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -24,24 +25,42 @@
       useOSProber = true;
     };
   };
+  
+  boot.consoleLogLevel = 0;
 
   #boot.initrd.kernelModules = [ "amdgpu" ];
 
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
+  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true;  
   networking.timeServers = options.networking.timeServers.default;
   # Set your time zone.
-  time.timeZone = "America/Los_Angeles";
+  #time.timeZone = "America/Los_Angeles";
   time.hardwareClockInLocalTime = true;
-
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
+  i18n.supportedLocales = [
+    "all"
+  ];
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.waylandFrontend = true;
+    fcitx5.addons = with pkgs; [
+      fcitx5-mozc
+      fcitx5-gtk
+    ];
+  };
   # console = {
   #   font = "Lat2-Terminus16";
   #   keyMap = "us";
@@ -62,32 +81,66 @@
     ];
   };
 
-  security.polkit.enable = true;
-  security.pam.services.login = {
-    enableGnomeKeyring = true;
+  hardware.keyboard.qmk.enable = true;
+
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+    pam.services = {
+      greetd.enableGnomeKeyring = true;
+      login.u2fAuth = true;
+      sudo.u2fAuth = true;
+    };
   };
-  services.gnome.gnome-keyring.enable = true;
-
-  nixpkgs.config.allowUnfree = true;
-
-  virtualisation.libvirtd.enable = true;
-  
 
   # Configure keymap in X11
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound.
-  sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
+  services = {
+    gnome.gnome-keyring.enable = true;
+    printing.enable = true;
+    gvfs.enable = true;
+    tumbler.enable = true;
+    automatic-timezoned.enable = true;
+    udev.packages = [ pkgs.yubikey-personalization pkgs.via ];
+    xserver.desktopManager.runXdgAutostartIfNone = true;
+    pipewire = {
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
+    };
+    greetd = {
+      enable = true;
+      settings = {
+	default_session = {
+	  command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd Hyprland";
+	  user = "greeter";
+	};
+      };
+    };
+  };
+  # Enable sound.
+  sound.enable = true;
+  # Enable virt-manager
+  virtualisation.libvirtd.enable = true;
+  
+  xdg.portal = {
+    enable = true;
+    extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
+  };
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = false;
+  users.users.root = {
+    home = "/root";
+    initialHashedPassword = "$6$Ynp7xmWMdHNfvs1i$nA6gKObMUGjKG2wERLggHchmya0TMyDDzs2nr.8/vtrrGT/P9QbJDFmNbemcCykE9vkZDbtt993kMMKndMsvg.";
+  };
   users.users.hyoon = {
     isNormalUser = true;
     home = "/home/hyoon";
@@ -100,49 +153,119 @@
     packages = with pkgs; [
     ];
   };
-  users.users.root = {
-    home = "/root";
-    initialHashedPassword = "$6$Ynp7xmWMdHNfvs1i$nA6gKObMUGjKG2wERLggHchmya0TMyDDzs2nr.8/vtrrGT/P9QbJDFmNbemcCykE9vkZDbtt993kMMKndMsvg.";
+
+
+  home-manager.useGlobalPkgs = true;
+  home-manager.useUserPackages = true;
+  home-manager.backupFileExtension = "backup";
+  home-manager.users.hyoon = { pkgs, ... }: {
+    home.packages = [];
+
+    gtk = {
+      enable = true;
+      iconTheme = {
+	name = "Colloid";
+	package = pkgs.colloid-icon-theme;
+      };
+      cursorTheme = {
+	name = "phinger-cursors-light";
+	package = pkgs.phinger-cursors;
+	size = 28;
+      };
+    };
+    home.stateVersion = "24.05";
+  };
+
+  environment.sessionVariables = {
+    NIXOS_OZONE_WL = "1";
+    TERMINAL = "wezterm";
+    EDITOR = "nvim";
+  };
+  environment.variables = {
+    XCURSOR_PATH = lib.mkDefault "${config.system.path}/share/icons";
   };
 
   fonts.fontconfig.enable = true;
-
-  environment.sessionVariables = {
-    XDG_CURRENT_DESKTOP = "Hyprland";
-    XDG_SESSION_TYPE = "wayland";
-    XDG_SESSION_DESKTOP = "Hyprland";
-    NIXOS_OZONE_WL = "1";
-    WRL_NO_HARDWARE_CURSORS = "1";
-    TERMINAL = "wezterm";
-    BROWSER = "librewolf";
-    EDITOR = "nvim";
-    GDK_BACKEND = "wayland,x11,*";
-    QT_QPA_PLATFORM = "wayland;xcb";
-    SDL_VIDEODRIVER = "wayland";
-    CLUTTER_BACKEND = "wayland";
-    _JAVA_AWT_WM_NONREPARENTING = "1";
-  };
+  fonts.enableDefaultPackages = true;
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-emoji
+    noto-fonts-cjk
+    fira-code-nerdfont
+    nerdfonts
+    font-awesome
+  ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
+  nixpkgs.config = {
+    allowUnfree = true;
+    packageOverrides = pkgs: {
+      unstable = import <nixos-unstable> {
+	config = config.nixpkgs.config;
+      };
+    };
+  };
+  programs = {
+    xfconf.enable = true;
+    seahorse.enable = true;
+    virt-manager.enable = true;
+    nix-ld.enable = true;
+    git.enable = true;
+    # Some programs need SUID wrappers, can be configured further or are
+    # started in user sessions.
+    # programs.mtr.enable = true;
+    gnupg.agent = {
+       enable = true;
+       enableSSHSupport = true;
+     };
+    hyprland = {
+      enable = true;
+      xwayland.enable = true;
+    };
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [
+	thunar-volman
+	thunar-archive-plugin
+	thunar-media-tags-plugin
+      ];
+    };
+    neovim = {
+      enable = true;
+      defaultEditor = true;
+      viAlias = true;
+      vimAlias = true;
+    };
+  };
   environment.systemPackages = with pkgs; [
     wget
     brave
     bitwarden-desktop
-    thunar
+    yubioath-flutter
+    yubikey-manager
+    yubikey-manager-qt
     librewolf
     thunderbird
     protonmail-bridge
-    networkmanagerapplet
-    nwg-look
+    via
+    vimPlugins.nvim-treesitter.withAllGrammars
+    unstable.nwg-look
     rofi-wayland
     wezterm
     waybar
-    pwvucontrol
+    networkmanagerapplet
+    pavucontrol
     polkit_gnome
     wl-clipboard
+    hyprpaper
+    hyprlock
+    grim
+    slurp
+    ferdium
     vesktop
     dunst
+    texliveFull
     zig
     zls
     opam
@@ -150,54 +273,11 @@
     blanket
     ventoy
     colloid-icon-theme
+    phinger-cursors
+    numix-icon-theme
+    vimix-cursors
+    capitaine-cursors
   ];
-
-  fonts.packages = with pkgs; [
-    noto-fonts
-    noto-fonts-emoji
-    noto-fonts-cjk
-    fira-code
-    fira-code-symbols
-    nerdfonts
-    font-awesome
-  ];
-  
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-  };
-
-  programs.neovim = {
-    enable = true;
-    defaultEditor = true;
-    viAlias = true;
-    vimAlias = true;
-  };
-
-  programs.git = {
-    enable = true;
-  };
-
-  programs.seahorse.enable = true;
-  programs.virt-manager.enable = true;
-
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
 
   systemd = {
     user.services.polit-gnome-authentication-agent-1 = {
@@ -215,19 +295,12 @@
     };
   };
 
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
-  system.copySystemConfiguration = true;
+  system.copySystemConfiguration = false;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

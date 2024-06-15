@@ -1,7 +1,7 @@
 {
     "name": "hypr",
-     "layer": "top", // Waybar at top layer
-    // "position": "bottom", // Waybar position (top|bottom|left|right)
+    "layer": "top", // Waybar at top layer
+    "position": "top", // Waybar position (top|bottom|left|right)
     "height": 30, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 2, // Gaps between modules (4px)
@@ -12,114 +12,21 @@
     
     // Modules configuration
     "hyprland/workspaces": {
-    "format": "{name}",
-    "on-click": "activate",
-    "persistent_workspaces": {
-         "1":[],
-	     "2":[],
-	     "3":[],
-	     "4":[],
-	     "5":[],
-	     "6":[],
-	     "7":[],
-	     "8":[],
-	     "9":[],
-    },
-    "format-icons": {
-        "1": "",
-        "2": "",
-        "3": "",
-        "4": "",
-        "5": "",
-        "5": "",
-	    "6": "",
-	    "7": "",
-	    "8": "",
-	    "9": "",
-
-        "urgent": "",
-        "active": "",
-        "default": ""
-      },
-      "sort-by-number": true,
-      "active-only": false
-    },
-     "sway/workspaces": {
-         "disable-scroll": true,
-         "all-outputs": true,
-	 "persistent_workspaces": {
-	     "1":[],
-	     "2":[],
-	     "3":[],
-	     "4":[],
-	     "5":[],
-	     "6":[],
-	     "7":[],
-	     "8":[],
-	     "9":[],
-	     "10":[],
-	 },
-         "format": "{name}",
-         "format-icons": {
-             "1": "",
-             "2": "",
-             "3": "",
-             "4": "",
-             "5": "",
-	         "6": "",
-	         "7": "",
-	         "8": "",
-	         "9": "",
-	         "10": "",
-             "urgent": "",
-             "focused": "",
-             "default": ""
-         }
-     },
-    "keyboard-state": {
-        "numlock": true,
-        "capslock": true,
-        "format": "{name} {icon}",
-        "format-icons": {
-            "locked": "",
-            "unlocked": ""
-        }
-    },
-    "sway/mode": {
-        "format": "<span style=\"italic\">{}</span>"
-    },
-    "mpd": {
-        "format": "{stateIcon} {consumeIcon}{randomIcon}{repeatIcon}{singleIcon}{artist} - {album} - {title} ({elapsedTime:%M:%S}/{totalTime:%M:%S}) ⸨{songPosition}|{queueLength}⸩ {volume}% ",
-        "format-disconnected": "Disconnected ",
-        "format-stopped": "{consumeIcon}{randomIcon}{repeatIcon}{singleIcon}Stopped ",
-        "unknown-tag": "N/A",
-        "interval": 2,
-        "consume-icons": {
-            "on": " "
-        },
-        "random-icons": {
-            "off": "<span color=\"#f53c3c\"></span> ",
-            "on": " "
-        },
-        "repeat-icons": {
-            "on": " "
-        },
-        "single-icons": {
-            "on": "1 "
-        },
-        "state-icons": {
-            "paused": "",
-            "playing": ""
-        },
-        "tooltip-format": "MPD (connected)",
-        "tooltip-format-disconnected": "MPD (disconnected)"
-    },
-    "idle_inhibitor": {
-        "format": "{icon}",
-        "format-icons": {
-            "activated": "",
-            "deactivated": ""
-        }
+        "format": "{name}",
+        "on-click": "activate",
+        "persistent_workspaces": {
+             "1":[],
+             "2":[],
+             "3":[],
+             "4":[],
+             "5":[],
+             "6":[],
+             "7":[],
+             "8":[],
+             "9":[],
+          },
+          "sort-by-number": true,
+          "active-only": false
     },
     "tray": {
         // "icon-size": 21,

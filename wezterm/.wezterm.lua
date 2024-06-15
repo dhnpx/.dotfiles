@@ -1,7 +1,14 @@
-local wezterm = require 'wezterm'
+local wezterm = require("wezterm")
 
 local config = wezterm.config_builder()
 
-config.enable_wayland = false;
+config.font = wezterm.font("Fira Code Nerd Font")
+--config.font = wezterm.font("Caskaydia Cove Nerd Font")
+--config.font = wezterm.font("SauceCodePro Nerd Font")
+--config.font = wezterm.font("MesloLGS Nerd Font")
+config.color_scheme = "Wez"
+config.window_background_opacity = 0.7
+config.xcursor_theme = "phinger-cursors-light"
+config.enable_wayland = false
 
 return config

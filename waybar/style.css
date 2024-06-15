@@ -1,6 +1,6 @@
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: Fira Code Nerd Font, "Font Awesome 6 Free";
+    font-family: "SauceCodePro Nerd Font", "Font Awesome 6 Free";
     font-size: 13px;
 }
 
@@ -112,13 +112,15 @@ window#waybar.chromium {
 }
 
 #battery {
-    background-color: #ffffff;
+    /*background-color: #ffffff;*/
+    background-color: rgba(0, 0, 0, 0);
     color: #000000;
 }
 
 #battery.charging, #battery.plugged {
     color: #ffffff;
-    background-color: #26A65B;
+    /*background-color: #26A65B;*/
+    background-color: rgba(0, 0, 0, 0);
 }
 
 @keyframes blink {
@@ -129,7 +131,8 @@ window#waybar.chromium {
 }
 
 #battery.critical:not(.charging) {
-    background-color: #f53c3c;
+    /* background-color: #f53c3c; */
+    background-color: rgba(0, 0, 0, 0);
     color: #ffffff;
     animation-name: blink;
     animation-duration: 0.5s;
@@ -155,7 +158,8 @@ label:focus {
 }
 
 #backlight {
-    background-color: #90b1b1;
+    /*background-color: #90b1b1; */
+    background-color: rgba(0, 0, 0, 0);
 }
 
 #network {
