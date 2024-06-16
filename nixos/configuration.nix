@@ -269,6 +269,7 @@
     zig
     zls
     opam
+    qmk
     unzip
     blanket
     ventoy
