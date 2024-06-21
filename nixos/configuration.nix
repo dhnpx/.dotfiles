@@ -26,7 +26,7 @@
     };
   };
   
-  boot.consoleLogLevel = 0;
+  boot.kernelParams = [ "quiet"];
 
   #boot.initrd.kernelModules = [ "amdgpu" ];
 
@@ -40,7 +40,17 @@
   # networking.firewall.enable = false;
   # Easiest to use and most distros use this by default.
   networking.networkmanager.enable = true;  
-  networking.timeServers = options.networking.timeServers.default;
+  networking.networkmanager.dispatcherScripts = [
+    {
+      source = pkgs.writeText "09-timezone" ''
+	case "$2" in
+	  up)
+	    timedatectl set-timezone "$(/run/current-system/sw/bin/curl --fail https://ipapi.co/timezone)"
+	    ;;
+	esac
+	'';
+    }
+  ];
   # Set your time zone.
   #time.timeZone = "America/Los_Angeles";
   time.hardwareClockInLocalTime = true;
@@ -73,11 +83,9 @@
   nix.settings = {
     substituters = [
       "https://hyprland.cachix.org"
-      "https://walker.cachix.org"
     ];
     trusted-public-keys = [
       "hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="
-      "walker.cachix.org-1:fG8q+uAaMqhsMxWjwvk0IMb4mFPFLqHjuvfwQxE4oJM="
     ];
   };
 
@@ -90,6 +98,8 @@
       greetd.enableGnomeKeyring = true;
       login.u2fAuth = true;
       sudo.u2fAuth = true;
+      hyprlock.u2fAuth = true;
+      greetd.u2fAuth = true;
     };
   };
 
@@ -137,11 +147,13 @@
   };
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.mutableUsers = false;
+  users.defaultUserShell = pkgs.zsh;
   users.users.root = {
     home = "/root";
     initialHashedPassword = "$6$Ynp7xmWMdHNfvs1i$nA6gKObMUGjKG2wERLggHchmya0TMyDDzs2nr.8/vtrrGT/P9QbJDFmNbemcCykE9vkZDbtt993kMMKndMsvg.";
   };
   users.users.hyoon = {
+    useDefaultShell = true;
     isNormalUser = true;
     home = "/home/hyoon";
     extraGroups = [ 
@@ -173,6 +185,27 @@
 	size = 28;
       };
     };
+
+    programs.neovim.plugins = [
+      pkgs.vimPlugins.nvim-treesitter.withAllGrammars
+    ];
+
+    programs.zsh = {
+      enable = true;
+      enableCompletion = true;
+      enableVteIntegration = true;
+      autosuggestion.enable = true;
+      syntaxHighlighting.enable = true;
+      initExtra = "source ~/.p10k.zsh";
+      plugins = [
+	  { 
+	    name = "powerlevel10k";
+	    src = pkgs.zsh-powerlevel10k;
+	    file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
+	  }
+      ];
+    };
+
     home.stateVersion = "24.05";
   };
 
@@ -207,11 +240,13 @@
     };
   };
   programs = {
+    zsh.enable = true;
     xfconf.enable = true;
     seahorse.enable = true;
     virt-manager.enable = true;
     nix-ld.enable = true;
     git.enable = true;
+    hyprlock.enable = true;
     # Some programs need SUID wrappers, can be configured further or are
     # started in user sessions.
     # programs.mtr.enable = true;
@@ -245,12 +280,11 @@
     yubioath-flutter
     yubikey-manager
     yubikey-manager-qt
+    pam_u2f
     librewolf
     thunderbird
     protonmail-bridge
     via
-    vimPlugins.nvim-treesitter.withAllGrammars
-    unstable.nwg-look
     rofi-wayland
     wezterm
     waybar
@@ -259,7 +293,6 @@
     polkit_gnome
     wl-clipboard
     hyprpaper
-    hyprlock
     grim
     slurp
     ferdium
@@ -319,6 +352,6 @@
   # and migrated your data accordingly.
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "24.05"; # Did you read the comment?
 
 }
