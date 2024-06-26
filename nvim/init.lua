@@ -477,6 +477,9 @@ require("lazy").setup({
 					},
 				},
 				texlab = {},
+				zls = {
+					command = "/run/current-system/sw/bin/zls",
+				},
 			}
 
 			-- Ensure the servers and tools above are installed
