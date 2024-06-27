@@ -185,6 +185,11 @@
 	size = 28;
       };
     };
+    home.pointerCursor = {
+      gtk.enable = true;
+      package = pkgs.phinger-cursors;
+      name = "phinger-cursors-light";
+    };
 
     programs.neovim.plugins = [
       pkgs.vimPlugins.nvim-treesitter.withAllGrammars
