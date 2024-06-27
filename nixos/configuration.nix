@@ -286,6 +286,7 @@
     yubikey-manager
     yubikey-manager-qt
     pam_u2f
+    btop
     librewolf
     thunderbird
     protonmail-bridge
