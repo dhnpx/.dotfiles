@@ -19,4 +19,4 @@ ln -sf ~/.dotfiles/waybar ~/.config/waybar
 ln -sf ~/.dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
 ln -sf ~/.dotfiles/Yubico/u2f_keys ~/.config/Yubico/u2f_keys
 ln -sf ~/.dotfiles/p10k/.p10k.zsh ~/.p10k.zsh 
-
+ln -sf ~/.dotfiles/tmux/.tmux.conf ~/.tmux.conf

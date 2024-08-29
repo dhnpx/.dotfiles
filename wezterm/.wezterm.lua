@@ -10,6 +10,7 @@ config.color_scheme = "Wez"
 config.window_background_opacity = 0.7
 config.xcursor_theme = "phinger-cursors-light"
 config.enable_wayland = false
+config.enable_tab_bar = false
 
 config.audible_bell = "Disabled"
 
