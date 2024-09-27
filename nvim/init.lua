@@ -472,6 +472,7 @@ require("lazy").setup({
 						},
 					},
 				},
+				clangd = {},
 				texlab = {},
 				zls = {
 					command = "home/hyoon/apps/zls",
