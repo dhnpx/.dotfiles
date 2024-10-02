@@ -1,0 +1,7 @@
+
+resize_algorithm = none
+hotspot_x = 0.4
+hotspot_y = 0.4
+define_override = col-resize
+define_size = 0, col-resize_24.svg
+        

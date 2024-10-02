@@ -1,0 +1,7 @@
+
+resize_algorithm = none
+hotspot_x = 0.0
+hotspot_y = 0.0
+define_override = alias
+define_size = 0, alias_24.svg
+        

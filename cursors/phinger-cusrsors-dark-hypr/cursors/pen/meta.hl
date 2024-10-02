@@ -1,0 +1,7 @@
+
+resize_algorithm = none
+hotspot_x = 0.2
+hotspot_y = 0.7
+define_override = pen
+define_size = 0, pen_24.svg
+        

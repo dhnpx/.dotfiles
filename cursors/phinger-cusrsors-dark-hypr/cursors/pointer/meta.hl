@@ -1,0 +1,7 @@
+
+resize_algorithm = none
+hotspot_x = 0.3
+hotspot_y = 0.2
+define_override = pointer
+define_size = 0, pointer_24.svg
+        

@@ -1,0 +1,7 @@
+
+resize_algorithm = none
+hotspot_x = 0.4
+hotspot_y = 0.1
+define_override = up
+define_size = 0, up_24.svg
+        

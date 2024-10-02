@@ -1,0 +1,7 @@
+
+resize_algorithm = none
+hotspot_x = 0.0
+hotspot_y = 0.0
+define_override = copy
+define_size = 0, copy_24.svg
+        

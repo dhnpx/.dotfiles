@@ -37,7 +37,6 @@ zstyle ':omz:update' frequency 7
 
 plugins=(git)
 ZSH_THEME="spaceship" # set by `omz`
-source $ZSH/oh-my-zsh.sh
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.history
@@ -57,9 +56,12 @@ setopt correctall
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 
-#autoload -U promptinit
-#promptinit
-#prompt gentoo
+if [[ $TERM == linux ]]; then
+    autoload -U promptinit
+    promptinit
+    prompt gentoo
+fi
 
-
-
+if [[ ! $TERM == linux ]]; then
+    source $ZSH/oh-my-zsh.sh
+fi

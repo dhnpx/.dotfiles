@@ -1,0 +1,7 @@
+
+resize_algorithm = none
+hotspot_x = 0.2
+hotspot_y = 0.7
+define_override = pipette
+define_size = 0, pipette_24.svg
+        

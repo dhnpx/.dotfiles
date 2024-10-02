@@ -1,0 +1,7 @@
+
+resize_algorithm = none
+hotspot_x = 0.8
+hotspot_y = 0.1
+define_override = ne-resize
+define_size = 0, ne-resize_24.svg
+        
