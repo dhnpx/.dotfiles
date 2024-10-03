@@ -21,7 +21,7 @@ vim.opt.smartcase = true
 vim.opt.signcolumn = "yes"
 
 -- Decrease https://aka.sainnhe.dev/fontsupdate time
-vim.opt.updatetime = 50
+vim.opt.updatetime = 250
 vim.opt.timeoutlen = 300
 
 -- Configure how new splits should be opened
@@ -517,7 +517,7 @@ require("lazy").setup({
 			{
 				"<leader>f",
 				function()
-					require("conform").format({ async = true, lsp_fallback = true })
+					require("conform").format({ async = true, lsp_format = "fallback" })
 				end,
 				mode = "",
 				desc = "[F]ormat buffer",
@@ -530,9 +530,15 @@ require("lazy").setup({
 				-- have a well standardized coding style. You can add additional
 				-- languages here or re-enable it for the disabled ones.
 				local disable_filetypes = { c = true, cpp = true }
+				local lsp_format_opt
+				if disable_filetypes[vim.bo[bufnr].filetype] then
+					lsp_format_opt = "never"
+				else
+					lsp_format_opt = "fallback"
+				end
 				return {
 					timeout_ms = 500,
-					lsp_fallback = not disable_filetypes[vim.bo[bufnr].filetype],
+					lsp_format = lsp_format_opt,
 				}
 			end,
 			formatters_by_ft = {
@@ -650,6 +656,11 @@ require("lazy").setup({
 					--    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
 				}),
 				sources = {
+					{
+						name = "lazydev",
+						-- set group index to - to skip loading LuaLS completions as lazydev recommends it
+						group_index = 0,
+					},
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "path" },
@@ -737,7 +748,7 @@ require("lazy").setup({
 		opts = {
 			ensure_installed = { "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
 			-- Autoinstall languages that are not installed
-			auto_install = false,
+			auto_install = true,
 			highlight = {
 				enable = true,
 				-- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
