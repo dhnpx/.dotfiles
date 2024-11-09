@@ -1,5 +1,18 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export PATH=$PATH:~/apps/
 export ZSH="$HOME/.oh-my-zsh/"
+
+if [[ $TERM == linux ]]; then
+    autoload -U promptinit
+    promptinit
+    prompt gentoo
+fi
 
 zstyle ':omz:update' mode auto      # update automatically without asking
 zstyle ':omz:update' frequency 7
@@ -36,7 +49,7 @@ zstyle ':omz:update' frequency 7
 # see 'man strftime' for details.
 
 plugins=(git)
-ZSH_THEME="spaceship" # set by `omz`
+ZSH_THEME="powerlevel10k/powerlevel10k" # set by `omz`
 
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.history
@@ -56,12 +69,10 @@ setopt correctall
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 
-if [[ $TERM == linux ]]; then
-    autoload -U promptinit
-    promptinit
-    prompt gentoo
-fi
 
 if [[ ! $TERM == linux ]]; then
     source $ZSH/oh-my-zsh.sh
 fi
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
