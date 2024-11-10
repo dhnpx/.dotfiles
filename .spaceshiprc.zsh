@@ -13,7 +13,7 @@ SPACESHIP_PROMPT_ORDER=(
     git
     char
 )
-SPACESHIP_RPROMPT_ORDER=(
-    exec_time
-    time
-)
+#SPACESHIP_RPROMPT_ORDER=(
+#    exec_time
+#    time
+#)

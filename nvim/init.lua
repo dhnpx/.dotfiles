@@ -3,6 +3,7 @@ vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
 
 vim.opt.mouse = "a"
+vim.opt.showmode = false
 
 -- Make relative linenumbers default
 vim.opt.relativenumber = true
@@ -89,9 +90,9 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 -- [[Install "lazy.nvim" plugin manager ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not vim.loop.fs_stat(lazypath) then
+if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
-	vim.fn.system({
+	local out = vim.fn.system({
 		"git",
 		"clone",
 		"--filter=blob:none",
@@ -99,7 +100,10 @@ if not vim.loop.fs_stat(lazypath) then
 		lazyrepo,
 		lazypath,
 	})
-end
+	if vim.v.shell_error ~= 0 then
+		error("Error cloning lazy.nvim:\n" .. out)
+	end
+end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
 -- [Configure and install plugins ]]
@@ -155,20 +159,53 @@ require("lazy").setup({
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
 		event = "VimEnter", -- Sets the loading event to 'VimEnter'
-		config = function() -- This is the function that runs, AFTER loading
-			require("which-key").setup()
-
-			-- Document existing key chains
-			require("which-key").add({
-				{ "<leader>c", group = "[C]ode" },
+		opts = {
+			icons = {
+				-- set icon mappings to true if you have a Nerd Font
+				mappings = vim.g.have_nerd_font,
+				-- If you are using a Nerd Font: set icons.keys to an empty table which will use the
+				-- default whick-key.nvim defined Nerd Font icons, otherwise define a string table
+				keys = vim.g.have_nerd_font and {} or {
+					Up = "<Up> ",
+					Down = "<Down> ",
+					Left = "<Left> ",
+					Right = "<Right> ",
+					C = "<C-…> ",
+					M = "<M-…> ",
+					D = "<D-…> ",
+					S = "<S-…> ",
+					CR = "<CR> ",
+					Esc = "<Esc> ",
+					ScrollWheelDown = "<ScrollWheelDown> ",
+					ScrollWheelUp = "<ScrollWheelUp> ",
+					NL = "<NL> ",
+					BS = "<BS> ",
+					Space = "<Space> ",
+					Tab = "<Tab> ",
+					F1 = "<F1>",
+					F2 = "<F2>",
+					F3 = "<F3>",
+					F4 = "<F4>",
+					F5 = "<F5>",
+					F6 = "<F6>",
+					F7 = "<F7>",
+					F8 = "<F8>",
+					F9 = "<F9>",
+					F10 = "<F10>",
+					F11 = "<F11>",
+					F12 = "<F12>",
+				},
+			},
+			spec = {
+				{ "<leader>c", group = "[C]ode", mode = { "n", "x" } },
 				{ "<leader>d", group = "[D]ocument" },
 				{ "<leader>r", group = "[R]ename" },
 				{ "<leader>s", group = "[S]earch" },
 				{ "<leader>w", group = "[W]orkspace" },
 				{ "<leader>t", group = "[T]oggle" },
 				{ "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
-			})
-		end,
+			},
+		},
 	},
 
 	-- NOTE: Plugins can specify dependencies.
@@ -282,7 +319,19 @@ require("lazy").setup({
 			end, { desc = "[S]earch [N]eovim files" })
 		end,
 	},
-
+	{
+		-- `lazydev` configures Lua LSP for your Neovim config, runtime and plugins
+		-- used for completion, annotations and signatures of Neovim apis
+		"folke/lazydev.nvim",
+		ft = "lua",
+		opts = {
+			library = {
+				-- Load luvit types when the `vim.uv` word is found
+				{ path = "luvit-meta/library", words = { "vim%.uv" } },
+			},
+		},
+	},
+	{ "Bilal2453/luvit-meta", lazy = true },
 	{ -- LSP Configuration & Plugins
 		"neovim/nvim-lspconfig",
 		dependencies = {
@@ -294,10 +343,7 @@ require("lazy").setup({
 			-- Useful status updates for LSP.
 			-- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
 			{ "j-hui/fidget.nvim", opts = {} },
-
-			-- `neodev` configures Lua LSP for your Neovim config, runtime and plugins
-			-- used for completion, annotations and signatures of Neovim apis
-			{ "folke/neodev.nvim", opts = {} },
+			"hrsh7th/cmp-nvim-lsp",
 		},
 		config = function()
 			-- Brief aside: **What is LSP?**
@@ -337,8 +383,9 @@ require("lazy").setup({
 					--
 					-- In this case, we create a function that lets us more easily define mappings specific
 					-- for LSP related items. It sets the mode, buffer and description for us each time.
-					local map = function(keys, func, desc)
-						vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
+					local map = function(keys, func, desc, mode)
+						mode = mode or "n"
+						vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
 					end
 
 					-- Jump to the definition of the word under your cursor.
@@ -376,7 +423,7 @@ require("lazy").setup({
 
 					-- Execute a code action, usually your cursor needs to be on top of an error
 					-- or a suggestion from your LSP for this to activate.
-					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+					map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
 					-- Opens a popup that displays documentation about the word under your cursor
 					--  See `:help K` for why this keymap.
@@ -512,7 +559,8 @@ require("lazy").setup({
 
 	{ -- Autoformat
 		"stevearc/conform.nvim",
-		lazy = false,
+		event = { "BufWritePre" },
+		cmd = { "ConformInfo" },
 		keys = {
 			{
 				"<leader>f",
@@ -549,6 +597,8 @@ require("lazy").setup({
 				-- You can use a sub-list to tell conform to run *until* a formatter
 				-- is found.
 				-- javascript = { { "prettierd", "prettier" } },
+				c = { "clang-format" },
+				cpp = { "clang-format" },
 			},
 		},
 	},
@@ -675,6 +725,7 @@ require("lazy").setup({
 		--
 		-- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
 		"scottmckendry/cyberdream.nvim",
+		lazy = false,
 		priority = 1000, -- Make sure to load this before all the other start plugins.
 		init = function()
 			-- Load the colorscheme here.
@@ -684,8 +735,11 @@ require("lazy").setup({
 				transparent = true,
 				italic_comments = true,
 				theme = {
-					variant = "dark",
+					variant = "default",
+					saturation = 0.8,
 				},
+
+				extensions = {},
 			})
 			vim.cmd.colorscheme("cyberdream")
 
@@ -757,6 +811,12 @@ require("lazy").setup({
 				additional_vim_regex_highlighting = { "ruby" },
 			},
 			indent = { enable = true, disable = { "ruby" } },
+			-- There are additional nvim-treesitter modules that you can use to interact
+			-- with nvim-treesitter. You should go explore a few and see what interests you:
+			--
+			--    - Incremental selection: Included, see `:help nvim-treesitter-incremental-selection-mod`
+			--    - Show your current context: https://github.com/nvim-treesitter/nvim-treesitter-context
+			--    - Treesitter + textobjects: https://github.com/nvim-treesitter/nvim-treesitter-textobjects
 		},
 		config = function(_, opts)
 			-- [[ Configure Treesitter ]] See `:help nvim-treesitter`
@@ -790,6 +850,7 @@ require("lazy").setup({
 	require("custom.plugins.lint"),
 	require("custom.plugins.neo-tree"),
 	require("custom.plugins.gitsigns"), -- adds gitsigns recommend keymaps
+	require("custom.plugins.java"),
 
 	-- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
 	--    This is the easiest way to modularize your config.
@@ -818,6 +879,5 @@ require("lazy").setup({
 		},
 	},
 })
-
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
