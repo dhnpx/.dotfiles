@@ -591,6 +591,8 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				c = { "clang_format" },
+				cpp = { "clang_format" },
 				-- Conform can also run multiple formatters sequentially
 				-- python = { "isort", "black" },
 				--
@@ -599,6 +601,11 @@ require("lazy").setup({
 				-- javascript = { { "prettierd", "prettier" } },
 				c = { "clang-format" },
 				cpp = { "clang-format" },
+			},
+			formatters = {
+				clang_format = {
+					prepend_args = { "--style=file", "--fallbackstyle=LLVM" },
+				},
 			},
 		},
 	},
