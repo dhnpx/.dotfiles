@@ -12,9 +12,9 @@ export ZSH="$HOME/.oh-my-zsh/"
 for d in ~/bin/*; do PATH="$PATH:$d"; done
 
 if [[ $TERM == linux ]]; then
-    autoload -U promptinit
-    promptinit
-    prompt gentoo
+    autoload -U compinit promptinit
+    compinit
+    promptinit; prompt gentoo
 fi
 
 zstyle ':omz:update' mode auto      # update automatically without asking

@@ -9,6 +9,7 @@ rm -rf ~/.config/foot
 rm -rf ~/.wezterm.lua
 rm -rf ~/.zshrc
 rm -rf ~/.spaceshiprc.zsh
+rm -rf ~/.config/yazi
 
 if [ "$mode" = "laptop" ]; then
     ln -sf ~/.dotfiles/hypr/laptop ~/.config/hypr
@@ -26,3 +27,4 @@ ln -sf ~/.dotfiles/.zshrc ~/.zshrc
 #ln -sf ~/.dotfiles/p10k/.p10k.zsh ~/.p10k.zsh 
 ln -sf ~/.dotfiles/tmux/.tmux.conf ~/.tmux.conf
 ln -sf ~/.dotfiles/.spaceshiprc.zsh ~/.spaceshiprc.zsh
+ln -sf ~/.dotfiles/yazi ~/.config/yazi
