@@ -5,7 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-export PATH=$PATH:~/apps/
+export PATH=$PATH:~/apps/:~/bin/
 export ZSH="$HOME/.oh-my-zsh/"
 #export BROWSER="$HOME/apps/zen-specific.AppImage"
 
