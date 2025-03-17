@@ -933,7 +933,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>p", vim.cmd.Git("push"), { desc = "[G]it [p]ush" })
 
 			-- rebase always
-			vim.keymap.set("n", "<leader>P", ":Git pull --rebase", { desc = "[G]it [P]ull (rebase)" })
+			vim.keymap.set("n", "<leader>P", ":Git pull --rebase<CR>", { desc = "[G]it [P]ull (rebase)" })
 
 			vim.keymap.set("n", "<leader>pu", ":Git push -u origin", opts)
 
@@ -949,6 +949,12 @@ require("lazy").setup({
 			require("peek").setup()
 			vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
 			vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+		end,
+	},
+	{
+		"mbbill/undotree",
+		config = function()
+			vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
 		end,
 	},
 	{
