@@ -7,6 +7,7 @@ vim.opt.showmode = false
 
 -- Make relative linenumbers default
 vim.opt.relativenumber = true
+vim.opt.number = true
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -22,7 +23,7 @@ vim.opt.smartcase = true
 vim.opt.signcolumn = "yes"
 
 -- Decrease https://aka.sainnhe.dev/fontsupdate time
-vim.opt.updatetime = 250
+vim.opt.updatetime = 50
 vim.opt.timeoutlen = 300
 
 -- Configure how new splits should be opened
@@ -34,7 +35,7 @@ vim.opt.splitbelow = true
 --  and `:help 'listchars'`
 
 -- Preview substitutions live, as you type!
-vim.opt.inccommand = "split"
+--vim.opt.inccommand = "split"
 
 -- Show chich line your cursor is on
 vim.opt.cursorline = true
@@ -46,7 +47,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 
 -- Set smart indent
---vim.opt.smartindent = true
+vim.opt.smartindent = true
 --vim.opt.autoindent = true
 
 -- Sync OS and Vim clipboard
@@ -55,7 +56,29 @@ vim.opt.clipboard = "unnamedplus"
 vim.opt.scrolloff = 10
 
 vim.opt.hlsearch = false
+vim.opt.incsearch = true
+
+vim.opt.signcolumn = "yes"
+vim.opt.undodir = os.getenv("HOME") .. "/.vim/undodir"
+vim.opt.undofile = true
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.confirm = true
+
+--vim.opt.colorcolumn = "80"
+
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
+
+vim.diagnostic.config({
+	float = {
+		focusable = false,
+		style = "minmal",
+		border = "rounded",
+		source = true,
+		header = "",
+		prefix = "",
+	},
+})
 
 -- Diagnositc keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous [D]iagnostic message" })
@@ -295,6 +318,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
 			vim.keymap.set("n", "<leader>s.", builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
 			vim.keymap.set("n", "<leader><leader>", builtin.buffers, { desc = "[ ] Find existing buffers" })
+			vim.keymap.set("n", "<C-p>", builtin.git_files, { desc = "Search Git Files" })
 
 			-- Slightly advanced example of overriding default behavior and theme
 			vim.keymap.set("n", "<leader>/", function()
@@ -523,7 +547,15 @@ require("lazy").setup({
 				clangd = {},
 				texlab = {},
 				zls = {
-					command = "home/hyoon/apps/zls",
+					--command = "home/hyoon/apps/zls",
+					root_dir = require("lspconfig").util.root_pattern(".git", "build.zig", "zls.json"),
+					settings = {
+						zls = {
+							enable_inlay_hints = true,
+							enable_snippets = true,
+							warn_style = true,
+						},
+					},
 				},
 			}
 
@@ -544,6 +576,8 @@ require("lazy").setup({
 			require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
 			require("mason-lspconfig").setup({
+				ensure_installed = {},
+				automatic_installation = true,
 				handlers = {
 					function(server_name)
 						local server = servers[server_name] or {}
@@ -806,7 +840,19 @@ require("lazy").setup({
 		"nvim-treesitter/nvim-treesitter",
 		build = ":TSUpdate",
 		opts = {
-			ensure_installed = { "bash", "c", "diff", "html", "lua", "luadoc", "markdown", "vim", "vimdoc" },
+			ensure_installed = {
+				"bash",
+				"c",
+				"diff",
+				"html",
+				"lua",
+				"luadoc",
+				"markdown",
+				"vim",
+				"vimdoc",
+				"zig",
+				"jsdoc",
+			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
 			highlight = {
@@ -858,41 +904,268 @@ require("lazy").setup({
 		end,
 	},
 	{
-		"folke/trouble.nvim",
+		"nvim-treesitter/nvim-treesitter-context",
+		after = "nvim-treesitter",
+		config = function()
+			require("treesitter-context").setup({
+				enable = true, -- Enable this plugin (Can be enabled/disabled later via commands)
+				multiwindow = false, -- Enable multiwindow support.
+				max_lines = 0, -- How many lines the window should span. Values <= 0 mean no limit.
+				min_window_height = 0, -- Minimum editor window height to enable context. Values <= 0 mean no limit.
+				line_numbers = true,
+				multiline_threshold = 20, -- Maximum number of lines to show for a single context
+				trim_scope = "outer", -- Which context lines to discard if `max_lines` is exceeded. Choices: 'inner', 'outer'
+				mode = "cursor", -- Line used to calculate context. Choices: 'cursor', 'topline'
+				-- Separator between context and content. Should be a single character string, like '-'.
+				-- When separator is set, the context will only show up when there are at least 2 lines above cursorline.
+				separator = nil,
+				zindex = 20, -- The Z-index of the context window
+				on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
+			})
+		end,
+	},
+	{
+		"tpope/vim-fugitive",
+		config = function()
+			vim.keymap.set("n", "<leader>gs", vim.cmd.Git, { desc = "[G]it [S]tatus" })
+			local bufnr = vim.api.nvim_get_current_buf()
+			local opts = { buffer = bufnr, remap = false }
+			vim.keymap.set("n", "<leader>p", vim.cmd.Git("push"), { desc = "[G]it [p]ush" })
+
+			-- rebase always
+			vim.keymap.set("n", "<leader>P", ":Git pull --rebase", { desc = "[G]it [P]ull (rebase)" })
+
+			vim.keymap.set("n", "<leader>pu", ":Git push -u origin", opts)
+
+			vim.keymap.set("n", "gu", "<cmd>diffget //2<CR>")
+			vim.keymap.set("n", "gh", "<cmd>diffget //3<CR>")
+		end,
+	},
+	{
+		"toppair/peek.nvim",
+		event = { "VeryLazy" },
+		build = "deno task --quite build:fast",
+		config = function()
+			require("peek").setup()
+			vim.api.nvim_create_user_command("PeekOpen", require("peek").open, {})
+			vim.api.nvim_create_user_command("PeekClose", require("peek").close, {})
+		end,
+	},
+	{
+		"stevearc/oil.nvim",
+		---@module 'oil'
+		---@type oil.SetupOpts
 		opts = {},
-		cmd = "Trouble",
-		keys = {
-			{
-				"<leader>tt",
-				"<cmd>Trouble diagnostics toggle<cr>",
-				desc = "Diagnostics (Trouble)",
-			},
-			{
-				"<leader>xX",
-				"<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-				desc = "Buffer Diagnostics (Trouble)",
-			},
-			{
-				"<leader>cs",
-				"<cmd>Trouble symbols toggle focus=false<cr>",
-				desc = "Symbols (Trouble)",
-			},
-			{
-				"<leader>cl",
-				"<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
-				desc = "LSP Definitions / references / ... (Trouble)",
-			},
-			{
-				"<leader>xL",
-				"<cmd>Trouble loclist toggle<cr>",
-				desc = "Location List (Trouble)",
-			},
-			{
-				"<leader>xQ",
-				"<cmd>Trouble qflist toggle<cr>",
-				desc = "Quickfix List (Trouble)",
-			},
-		},
+		-- Optional dependencies
+		dependencies = { { "echasnovski/mini.icons", opts = {} } },
+		-- dependencies = { "nvim-tree/nvim-web-devicons" }, -- use if you prefer nvim-web-devicons
+		-- Lazy loading is not recommended because it is very tricky to make it work correctly in all situations.
+		lazy = false,
+		config = function()
+			require("oil").setup({
+				vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" }),
+				-- Oil will take over directory buffers (e.g. `vim .` or `:e src/`)
+				-- Set to false if you want some other plugin (e.g. netrw) to open when you edit directories.
+				default_file_explorer = true,
+				-- Id is automatically added at the beginning, and name at the end
+				-- See :help oil-columns
+				columns = {
+					"icon",
+					-- "permissions",
+					-- "size",
+					-- "mtime",
+				},
+				-- Buffer-local options to use for oil buffers
+				buf_options = {
+					buflisted = false,
+					bufhidden = "hide",
+				},
+				-- Window-local options to use for oil buffers
+				win_options = {
+					wrap = false,
+					signcolumn = "no",
+					cursorcolumn = false,
+					foldcolumn = "0",
+					spell = false,
+					list = false,
+					conceallevel = 3,
+					concealcursor = "nvic",
+				},
+				-- Send deleted files to the trash instead of permanently deleting them (:help oil-trash)
+				delete_to_trash = false,
+				-- Skip the confirmation popup for simple operations (:help oil.skip_confirm_for_simple_edits)
+				skip_confirm_for_simple_edits = false,
+				-- Selecting a new/moved/renamed file or directory will prompt you to save changes first
+				-- (:help prompt_save_on_select_new_entry)
+				prompt_save_on_select_new_entry = true,
+				-- Oil will automatically delete hidden buffers after this delay
+				-- You can set the delay to false to disable cleanup entirely
+				-- Note that the cleanup process only starts when none of the oil buffers are currently displayed
+				cleanup_delay_ms = 2000,
+				lsp_file_methods = {
+					-- Enable or disable LSP file operations
+					enabled = true,
+					-- Time to wait for LSP file operations to complete before skipping
+					timeout_ms = 1000,
+					-- Set to true to autosave buffers that are updated with LSP willRenameFiles
+					-- Set to "unmodified" to only save unmodified buffers
+					autosave_changes = false,
+				},
+				-- Constrain the cursor to the editable parts of the oil buffer
+				-- Set to `false` to disable, or "name" to keep it on the file names
+				constrain_cursor = "editable",
+				-- Set to true to watch the filesystem for changes and reload oil
+				watch_for_changes = false,
+				-- Keymaps in oil buffer. Can be any value that `vim.keymap.set` accepts OR a table of keymap
+				-- options with a `callback` (e.g. { callback = function() ... end, desc = "", mode = "n" })
+				-- Additionally, if it is a string that matches "actions.<name>",
+				-- it will use the mapping at require("oil.actions").<name>
+				-- Set to `false` to remove a keymap
+				-- See :help oil-actions for a list of all available actions
+				keymaps = {
+					["g?"] = { "actions.show_help", mode = "n" },
+					["<CR>"] = "actions.select",
+					["<C-s>"] = { "actions.select", opts = { vertical = true } },
+					["<C-h>"] = { "actions.select", opts = { horizontal = true } },
+					["<C-t>"] = { "actions.select", opts = { tab = true } },
+					["<C-p>"] = "actions.preview",
+					["<C-c>"] = { "actions.close", mode = "n" },
+					["<C-l>"] = "actions.refresh",
+					["-"] = { "actions.parent", mode = "n" },
+					["_"] = { "actions.open_cwd", mode = "n" },
+					["`"] = { "actions.cd", mode = "n" },
+					["~"] = { "actions.cd", opts = { scope = "tab" }, mode = "n" },
+					["gs"] = { "actions.change_sort", mode = "n" },
+					["gx"] = "actions.open_external",
+					["g."] = { "actions.toggle_hidden", mode = "n" },
+					["g\\"] = { "actions.toggle_trash", mode = "n" },
+				},
+				-- Set to false to disable all of the above keymaps
+				use_default_keymaps = true,
+				view_options = {
+					-- Show files and directories that start with "."
+					show_hidden = false,
+					-- This function defines what is considered a "hidden" file
+					is_hidden_file = function(name, bufnr)
+						local m = name:match("^%.")
+						return m ~= nil
+					end,
+					-- This function defines what will never be shown, even when `show_hidden` is set
+					is_always_hidden = function(name, bufnr)
+						return false
+					end,
+					-- Sort file names with numbers in a more intuitive order for humans.
+					-- Can be "fast", true, or false. "fast" will turn it off for large directories.
+					natural_order = "fast",
+					-- Sort file and directory names case insensitive
+					case_insensitive = false,
+					sort = {
+						-- sort order can be "asc" or "desc"
+						-- see :help oil-columns to see which columns are sortable
+						{ "type", "asc" },
+						{ "name", "asc" },
+					},
+					-- Customize the highlight group for the file name
+					highlight_filename = function(entry, is_hidden, is_link_target, is_link_orphan)
+						return nil
+					end,
+				},
+				-- Extra arguments to pass to SCP when moving/copying files over SSH
+				extra_scp_args = {},
+				-- EXPERIMENTAL support for performing file operations with git
+				git = {
+					-- Return true to automatically git add/mv/rm files
+					add = function(path)
+						return false
+					end,
+					mv = function(src_path, dest_path)
+						return false
+					end,
+					rm = function(path)
+						return false
+					end,
+				},
+				-- Configuration for the floating window in oil.open_float
+				float = {
+					-- Padding around the floating window
+					padding = 2,
+					-- max_width and max_height can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
+					max_width = 0,
+					max_height = 0,
+					border = "rounded",
+					win_options = {
+						winblend = 0,
+					},
+					-- optionally override the oil buffers window title with custom function: fun(winid: integer): string
+					get_win_title = nil,
+					-- preview_split: Split direction: "auto", "left", "right", "above", "below".
+					preview_split = "auto",
+					-- This is the config that will be passed to nvim_open_win.
+					-- Change values here to customize the layout
+					override = function(conf)
+						return conf
+					end,
+				},
+				-- Configuration for the file preview window
+				preview_win = {
+					-- Whether the preview window is automatically updated when the cursor is moved
+					update_on_cursor_moved = true,
+					-- How to open the preview window "load"|"scratch"|"fast_scratch"
+					preview_method = "fast_scratch",
+					-- A function that returns true to disable preview on a file e.g. to avoid lag
+					disable_preview = function(filename)
+						return false
+					end,
+					-- Window-local options to use for preview window buffers
+					win_options = {},
+				},
+				-- Configuration for the floating action confirmation window
+				confirmation = {
+					-- Width dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
+					-- min_width and max_width can be a single value or a list of mixed integer/float types.
+					-- max_width = {100, 0.8} means "the lesser of 100 columns or 80% of total"
+					max_width = 0.9,
+					-- min_width = {40, 0.4} means "the greater of 40 columns or 40% of total"
+					min_width = { 40, 0.4 },
+					-- optionally define an integer/float for the exact width of the preview window
+					width = nil,
+					-- Height dimensions can be integers or a float between 0 and 1 (e.g. 0.4 for 40%)
+					-- min_height and max_height can be a single value or a list of mixed integer/float types.
+					-- max_height = {80, 0.9} means "the lesser of 80 columns or 90% of total"
+					max_height = 0.9,
+					-- min_height = {5, 0.1} means "the greater of 5 columns or 10% of total"
+					min_height = { 5, 0.1 },
+					-- optionally define an integer/float for the exact height of the preview window
+					height = nil,
+					border = "rounded",
+					win_options = {
+						winblend = 0,
+					},
+				},
+				-- Configuration for the floating progress window
+				progress = {
+					max_width = 0.9,
+					min_width = { 40, 0.4 },
+					width = nil,
+					max_height = { 10, 0.9 },
+					min_height = { 5, 0.1 },
+					height = nil,
+					border = "rounded",
+					minimized_border = "none",
+					win_options = {
+						winblend = 0,
+					},
+				},
+				-- Configuration for the floating SSH window
+				ssh = {
+					border = "rounded",
+				},
+				-- Configuration for the floating keymaps help window
+				keymaps_help = {
+					border = "rounded",
+				},
+			})
+		end,
 	},
 
 	-- The following two comments only work if you have downloaded the kickstart repo, not just copy pasted the
@@ -918,26 +1191,4 @@ require("lazy").setup({
 	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
 	--    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
 	-- { import = 'custom.plugins' },
-}, {
-	ui = {
-		-- If you are using a Nerd Font: set icons to an empty table which will use the
-		-- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-		icons = vim.g.have_nerd_font and {} or {
-			cmd = "⌘",
-			config = "🛠",
-			event = "📅",
-			ft = "📂",
-			init = "⚙",
-			keys = "🗝",
-			plugin = "🔌",
-			runtime = "💻",
-			require = "🌙",
-			source = "📄",
-			start = "🚀",
-			task = "📌",
-			lazy = "💤 ",
-		},
-	},
 })
--- The line beneath this is called `modeline`. See `:help modeline`
--- vim: ts=2 sts=2 sw=2 et
