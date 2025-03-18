@@ -7,6 +7,8 @@ fi
 
 export PATH=$PATH:~/apps/:~/bin/
 export ZSH="$HOME/.oh-my-zsh/"
+export XCURSOR_PATH=${XCURSOR_PATH}:~/.local/share/icons
+export MOZ_ENABLE_WAYLAND=1
 #export BROWSER="$HOME/apps/zen-specific.AppImage"
 
 for d in ~/bin/*; do PATH="$PATH:$d"; done
