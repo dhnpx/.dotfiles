@@ -60,13 +60,13 @@ return {
 				end,
 				desc = "Notification History",
 			},
-			{
-				"<leader>e",
-				function()
-					Snacks.explorer()
-				end,
-				desc = "File Explorer",
-			},
+			-- {
+			-- 	"<leader>e",
+			-- 	function()
+			-- 		Snacks.explorer()
+			-- 	end,
+			-- 	desc = "File Explorer",
+			-- },
 			-- find
 			{
 				"<leader>fb",
@@ -132,13 +132,13 @@ return {
 				end,
 				desc = "Git Log Line",
 			},
-			{
-				"<leader>gs",
-				function()
-					Snacks.picker.git_status()
-				end,
-				desc = "Git Status",
-			},
+			-- {
+			-- 	"<leader>gs",
+			-- 	function()
+			-- 		Snacks.picker.git_status()
+			-- 	end,
+			-- 	desc = "Git Status",
+			-- },
 			{
 				"<leader>gS",
 				function()
@@ -161,20 +161,6 @@ return {
 				desc = "Git Log File",
 			},
 			-- Grep
-			{
-				"<leader>sb",
-				function()
-					Snacks.picker.lines()
-				end,
-				desc = "Buffer Lines",
-			},
-			{
-				"<leader>sB",
-				function()
-					Snacks.picker.grep_buffers()
-				end,
-				desc = "Grep Open Buffers",
-			},
 			{
 				"<leader>sg",
 				function()
@@ -218,6 +204,13 @@ return {
 					Snacks.picker.lines()
 				end,
 				desc = "Buffer Lines",
+			},
+			{
+				"<leader>sB",
+				function()
+					Snacks.picker.grep_buffers()
+				end,
+				desc = "Grep Open Buffers",
 			},
 			{
 				"<leader>sc",

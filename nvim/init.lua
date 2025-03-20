@@ -2,6 +2,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
 
+vim.cmd.set("termguicolors")
+
 vim.opt.mouse = "a"
 vim.opt.showmode = false
 
@@ -184,6 +186,7 @@ require("lazy").setup({
 	require("plugins.gitsigns"),
 	require("plugins.undotree"),
 	require("plugins.oil"),
+	require("plugins.yazi"),
 	require("plugins.conform"),
 	require("plugins.vim-sleuth"),
 	require("plugins.todo-comments"),
@@ -192,6 +195,7 @@ require("lazy").setup({
 	require("plugins.java"),
 	require("plugins.peek"),
 	require("plugins.cyberdream"), --colorscheme
+	require("plugins.colorizer"),
 
 	--  Uncomment any of the lines below to enable them (you will need to restart nvim).
 
