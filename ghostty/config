@@ -44,6 +44,11 @@
 
 confirm-close-surface = false
 
+font-family = Maple Mono NL NF
+# font-family-bold = Maple Mono NF Bold
+# font-family-italic = Maple Mono NF Italic
+# font-family-bold-italic = Maple Mono NF Bold Italic
+
 background = #282c34
 
 palette = 0=#1d1f21
@@ -62,3 +67,4 @@ palette = 12=#7aa6da
 palette = 13=#c397d8
 palette = 14=#70c0b1
 palette = 15=#eaeaea
+

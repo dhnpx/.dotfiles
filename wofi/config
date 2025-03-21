@@ -1,0 +1,10 @@
+mode=run
+prompt=Run: 
+term=ghostty
+width=25%
+lines=10
+hide-scroll=true
+insensitive=true
+matching=muli-contains
+stylesheet=new.css
+
