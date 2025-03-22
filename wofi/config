@@ -2,9 +2,9 @@ mode=run
 prompt=Run: 
 term=ghostty
 width=25%
-lines=10
+lines=7
 hide-scroll=true
 insensitive=true
 matching=muli-contains
-stylesheet=new.css
+stylesheet=white.css
 
