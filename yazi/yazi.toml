@@ -29,7 +29,11 @@ sixel_fraction  = 15
 ueberzug_scale  = 1
 ueberzug_offset = [ 0, 0, 0, 0 ]
 
+
 [opener]
+pdff = [
+	{ run = 'zathura "$@"', orphan = true, desc = "zathura", for = "linux" },
+]
 edit = [
 	{ run = '${EDITOR:-vi} "$@"', desc = "$EDITOR", block = true, for = "unix" },
 	{ run = 'code %*',    orphan = true, desc = "code",           for = "windows" },
@@ -75,6 +79,8 @@ rules = [
 	{ mime = "*/javascript", use = [ "edit", "reveal" ] },
 	# Empty file
 	{ mime = "inode/empty", use = [ "edit", "reveal" ] },
+	# PDF
+	{ mime = "application/pdf", use = [ "pdff", "reveal" ] },
 	# Fallback
 	{ name = "*", use = [ "open", "reveal" ] },
 ]

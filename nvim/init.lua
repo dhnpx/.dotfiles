@@ -176,6 +176,8 @@ require("lazy").setup({
 	require("plugins.which-key"),
 	require("plugins.snacks"),
 	require("plugins.lsp"),
+	require("plugins.nvim-tresitter"),
+	require("plugins.nvim-treesitter-context"),
 	require("plugins.blink"),
 	require("plugins.lazydev"),
 	require("plugins.luvit-meta"),
@@ -199,6 +201,7 @@ require("lazy").setup({
 
 	--  Uncomment any of the lines below to enable them (you will need to restart nvim).
 
+	--require("plugins.onehalf"),
 	--require("custom.plugins.neo-tree"),
 	--require("plugins.nvim-cmp"),
 	--require("plugins.telescope"),
