@@ -31,8 +31,9 @@ ueberzug_offset = [ 0, 0, 0, 0 ]
 
 
 [opener]
-pdff = [
-	{ run = 'zathura "$@"', orphan = true, desc = "zathura", for = "linux" },
+<<<<<<< HEAD
+pdf = [
+	{ run = 'zathura "$@"', desc = "zathura", orphan = true, for = "unix" }
 ]
 edit = [
 	{ run = '${EDITOR:-vi} "$@"', desc = "$EDITOR", block = true, for = "unix" },
@@ -79,8 +80,8 @@ rules = [
 	{ mime = "*/javascript", use = [ "edit", "reveal" ] },
 	# Empty file
 	{ mime = "inode/empty", use = [ "edit", "reveal" ] },
-	# PDF
-	{ mime = "application/pdf", use = [ "pdff", "reveal" ] },
+	# Pdf
+	{ mime = "application/pdf", use = [ "pdf", "reveal"] },
 	# Fallback
 	{ name = "*", use = [ "open", "reveal" ] },
 ]

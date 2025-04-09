@@ -205,6 +205,7 @@ return {
 				zls = {
 					--command = "home/hyoon/apps/zls",
 					root_dir = require("lspconfig").util.root_pattern(".git", "build.zig", "zls.json"),
+					filetypes = { "zig", "zir", "zon" },
 					settings = {
 						zls = {
 							enable_inlay_hints = true,
