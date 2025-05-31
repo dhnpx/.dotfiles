@@ -1,0 +1,6 @@
+#!/bin/sh
+case "$2" in
+    connectivity-change)
+        ln -sf /usr/share/zoneinfo/"$(curl --fail https://ipapi.co/timezone)" /etc/localtime
+    ;;
+esac
