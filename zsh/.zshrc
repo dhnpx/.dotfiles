@@ -46,7 +46,7 @@ setopt correctall
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 
-for d in ~/bin/*; do PATH="$PATH:$d"; done
+# for d in ~/bin/*; do PATH="$PATH:$d"; done
 export PATH=$PATH:~/apps/:~/bin/
 export XCURSOR_PATH=${XCURSOR_PATH}:~/.local/share/icons
 export MOZ_ENABLE_WAYLAND=1
@@ -66,6 +66,7 @@ alias egrep='egrep --color=auto'
 alias diff='diff --color-auto'
 alias ip='ip --color=auto'
 
+source <(fzf --zsh)
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd

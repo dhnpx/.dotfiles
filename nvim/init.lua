@@ -119,6 +119,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 	end,
 })
 
+vim.filetype.add({
+	extension = {
+		h = "c",
+	},
+})
 -- [[Install "lazy.nvim" plugin manager ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -199,18 +204,11 @@ require("lazy").setup({
 	require("plugins.cyberdream"), --colorscheme
 	require("plugins.colorizer"),
 
-	--  Uncomment any of the lines below to enable them (you will need to restart nvim).
-
 	--require("plugins.onehalf"),
 	--require("custom.plugins.neo-tree"),
 	--require("plugins.nvim-cmp"),
 	--require("plugins.telescope"),
 	--require("plugins.indent_line"),
 
-	--  NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
-	--    This is the easiest way to modularize your config.
-	--
-	--  Uncomment the following line and add your plugins to `lua/custom/plugins/*.lua` to get going.
-	--    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
-	-- { import = 'custom.plugins' },
+	-- { import = 'plugins' },
 })
