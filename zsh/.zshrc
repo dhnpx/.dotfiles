@@ -55,6 +55,8 @@ export EDITOR=/bin/nvim
 #zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 #zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 
+bindkey -s ^f "tmux_sessionizer\n"
+
 alias ls='ls --color=auto'
 alias ll='ls -l'
 alias la='ls -lA'
@@ -77,6 +79,14 @@ function y() {
 	rm -f -- "$tmp"
 }
 
+function fwd() {
+  cd $(find * -type d | fzf)
+}
+
+function fd() {
+  local dir
+  dir="$(/usr/bin/fd -H -t d . '/home/hyoon' | fzf)"
+}
 
 # fnm
 FNM_PATH="/home/hyoon/.local/share/fnm"

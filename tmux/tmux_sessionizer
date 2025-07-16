@@ -1,0 +1,43 @@
+#!/bin/bash
+
+is_tmux_running() {
+    tmux_running=$(pgrep tmux)
+
+    if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+        return 1
+    fi
+    return 0
+}
+
+has_session() {
+    tmux list-sessions | grep -q "^$1:"
+}
+
+switch_to() {
+    if [[ -z $TMUX ]]; then
+        tmux attach-session -t "$1"
+    else
+        tmux switch-client -t "$1"
+    fi
+}
+
+#-------------------------------------------------------------#
+
+selected=$(find ~ -type d | fzf)
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+selected_name_name=$(basename "$selected" | tr . _)
+
+if ! is_tmux_running; then
+    tmux new-session -ds $selected_name -c $selected
+    exit 0
+fi
+
+if ! tmux has_session "$selected_name"; then
+    tmux new-session -ds "$selected_name" -c "$selected"
+fi
+
+switch_to "$selected_name"
