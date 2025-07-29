@@ -38,4 +38,4 @@ sudo cp -r ./fonts/MapleMonoNL-NF-unhinted/ /usr/share/fonts/
 
 chmod +x ./network_manager/09-timezone
 sudo cp ./network_manager/09-timezone /etc/NetworkManager/dispatcher.d/
-sudo chown root /etc/Networkmanager/dispatcher.d/09-timezone
+sudo chown root /etc/NetworkManager/dispatcher.d/09-timezone
