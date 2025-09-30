@@ -1,0 +1,37 @@
+[general]
+destination = "$HOME/.dotfiles/hypr/monitors.conf"
+
+[power_events]
+[power_events.dbus_query_object]
+path = "/org/freedesktop/UPower/devices/line_power_ACAD"
+
+[[power_events.dbus_signal_match_rules]]
+object_path = "/org/freedesktop/UPower/devices/line_power_ACAD"
+
+[profiles.laptop_only]
+config_file = "hyprconfigs/laptop_only.conf"
+config_file_type = "static"
+
+[[profiles.laptop_only.conditions.required_monitors]]
+name = "eDP-1"
+
+[profiles.laptop_dual]
+config_file = "hyprconfigs/laptop_dual.conf"
+config_file_type = "static"
+
+[[profiles.laptop_dual.conditions.required_monitors]]
+name = "eDP-1"
+
+[[profiles.laptop_dual.conditions.required_monitors]]
+name = "HDMI-A-1"
+
+[profiles.laptop_dual_c]
+config_file = "hyprconfigs/laptop_dual_c.conf"
+config_file_tpye = "static"
+
+[[profiles.laptop_dual_c.conditions.required_monitors]]
+name = "eDP-1"
+
+[[profiles.laptop_dual_c.conditions.required_monitors]]
+name = "DP-1"
+

@@ -13,6 +13,11 @@ rm -rf ~/.config/yazi
 rm -rf ~/.config/ghostty
 rm -rf ~/.config/wozi
 
+if [ ! -d "${ZDOTDIR:-$HOME}/.antidote" ]; then
+    git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-$HOME}/.antidote
+fi
+
+
 if [ "$mode" = "laptop" ]; then
     ln -sf ~/.dotfiles/hypr/laptop ~/.config/hypr
 else
@@ -29,10 +34,10 @@ ln -sf ~/.dotfiles/zsh/.zsh_plugins.txt ~/.zsh_plugins.txt
 #ln -sf ~/.dotfiles/p10k/.p10k.zsh ~/.p10k.zsh 
 ln -sf ~/.dotfiles/tmux/.tmux.conf ~/.tmux.conf
 ln -sf ~/.dotfiles/tmux/tmux_sessionzier ~/bin/tmux_sessionzier
-#ln -sf ~/.dotfiles/.spaceshiprc.zsh ~/.spaceshiprc.zsh
 ln -sf ~/.dotfiles/yazi ~/.config/yazi
 ln -sf ~/.dotfiles/ghostty ~/.config/ghostty
 ln -sf ~/.dotfiles/wofi ~/.config/wofi
+ln -sf ~/.dotfiles/hyprdynamicmonitors/ ~/.config/hyprdynamicmonitors
 
 sudo cp -r ./fonts/MapleMonoNL-NF-unhinted/ /usr/share/fonts/
 

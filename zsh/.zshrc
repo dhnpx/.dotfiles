@@ -5,7 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-if [[ $TERM != linux ]] then; 
+if [[ $TERM != linux ]]; then
   source ~/.antidote/antidote.zsh
   # ${ZDOTDIR:-~}/.zshrc
 
@@ -28,7 +28,7 @@ if [[ $TERM != linux ]] then;
   source ${zsh_plugins}.zsh
 fi
 
-if [[ $TERM == linux ]] then;
+if [[ $TERM == linux ]]; then
   autoload promptinit compinit
   compinit
   promptinit 
@@ -67,6 +67,7 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias diff='diff --color-auto'
 alias ip='ip --color=auto'
+alias nboss='netbird up --management-url https://nb.osscsuf.org:33073 --admin-url https://nb.osscsuf.org'
 
 source <(fzf --zsh)
 
@@ -86,6 +87,7 @@ function fwd() {
 function fd() {
   local dir
   dir="$(/usr/bin/fd -H -t d . '/home/hyoon' | fzf)"
+  cd "$dir"
 }
 
 # fnm
@@ -97,3 +99,4 @@ fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+export PATH="$HOME/.diversion/bin:$PATH"
