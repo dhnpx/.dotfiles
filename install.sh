@@ -33,7 +33,7 @@ ln -sf ~/.dotfiles/zsh/.zshrc ~/.zshrc
 ln -sf ~/.dotfiles/zsh/.zsh_plugins.txt ~/.zsh_plugins.txt
 #ln -sf ~/.dotfiles/p10k/.p10k.zsh ~/.p10k.zsh 
 ln -sf ~/.dotfiles/tmux/.tmux.conf ~/.tmux.conf
-ln -sf ~/.dotfiles/tmux/tmux_sessionzier ~/bin/tmux_sessionzier
+ln -sf ~/.dotfiles/tmux/tmux_sessionzier ~/bin/tmux_sessionizer
 ln -sf ~/.dotfiles/yazi ~/.config/yazi
 ln -sf ~/.dotfiles/ghostty ~/.config/ghostty
 ln -sf ~/.dotfiles/wofi ~/.config/wofi
