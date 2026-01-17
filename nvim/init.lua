@@ -71,6 +71,8 @@ vim.opt.confirm = true
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
+vim.o.winborder = "single"
+
 vim.diagnostic.config({
 	float = {
 		focusable = false,
