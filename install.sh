@@ -11,7 +11,7 @@ rm -rf ~/.zshrc
 #rm -rf ~/.spaceshiprc.zsh
 rm -rf ~/.config/yazi
 rm -rf ~/.config/ghostty
-rm -rf ~/.config/wozi
+rm -rf ~/.config/wofi
 
 if [ ! -d "${ZDOTDIR:-$HOME}/.antidote" ]; then
     git clone --depth=1 https://github.com/mattmc3/antidote.git ${ZDOTDIR:-$HOME}/.antidote
