@@ -125,6 +125,7 @@ vim.filetype.add({
 	extension = {
 		h = "c",
 	},
+	pattern = { [".*/hypr/.*%.conf"] = "hyprlang" },
 })
 -- [[Install "lazy.nvim" plugin manager ]]
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"

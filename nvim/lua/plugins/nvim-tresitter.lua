@@ -15,6 +15,7 @@ return {
 				"vimdoc",
 				"zig",
 				"jsdoc",
+				"hyprlang",
 			},
 			-- Autoinstall languages that are not installed
 			auto_install = true,
