@@ -42,9 +42,9 @@ return {
 			{
 				"<leader>/",
 				function()
-					Snacks.picker.grep()
+					Snacks.picker.lines()
 				end,
-				desc = "Grep",
+				desc = "Buffer Lines",
 			},
 			{
 				"<leader>:",

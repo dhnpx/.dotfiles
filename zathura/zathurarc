@@ -1,0 +1,3 @@
+set pdf-mupdf true
+set adjust-open "fit-width"
+set zoom 1.0

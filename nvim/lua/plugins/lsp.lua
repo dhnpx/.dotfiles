@@ -151,6 +151,33 @@ return {
 				end,
 			})
 
+			vim.diagnostic.config({
+				serverity_srot = true,
+				float = { border = "rounded", source = "if_many" },
+				underline = { severity = vim.diagnostic.severity.ERROR },
+				signs = vim.g.have_nerd_fopnt and {
+					text = {
+						[vim.diagnostic.severity.ERROR] = "󰅚 ",
+						[vim.diagnostic.severity.WARN] = "󰀪 ",
+						[vim.diagnostic.severity.INFO] = "󰋽 ",
+						[vim.diagnostic.severity.HINT] = "󰌶 ",
+					},
+				} or {},
+				virtual_text = {
+					source = "if_many",
+					spacing = 2,
+					format = function(diagnostic)
+						local diagnostic_message = {
+							[vim.diagnostic.severity.ERROR] = diagnostic.message,
+							[vim.diagnostic.severity.WARN] = diagnostic.message,
+							[vim.diagnostic.severity.INFO] = diagnostic.message,
+							[vim.diagnostic.severity.HINT] = diagnostic.message,
+						}
+						return diagnostic_message[diagnostic.severity]
+					end,
+				},
+			})
+
 			-- LSP servers and clients are able to communicate to each other what features they support.
 			--  By default, Neovim doesn't support everything that is in the LSP specification.
 			--  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
@@ -158,9 +185,6 @@ return {
 
 			-- local capabilities = vim.lsp.protocol.make_client_capabilities()
 			local capabilities = require("blink.cmp").get_lsp_capabilities()
-			--require("lspconfig").lua_ls.setup({ capabilities = capabilities })
-			capabilities =
-				vim.tbl_deep_extend("force", capabilities, require("blink.cmp").get_lsp_capabilities({}, false))
 
 			--
 			-- Enable the following language servers
@@ -186,6 +210,7 @@ return {
 				-- tsserver = {},
 				--
 
+				gopls = {},
 				lua_ls = {
 					-- cmd = {...},
 					-- filetypes = { ...},
