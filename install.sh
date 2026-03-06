@@ -41,7 +41,9 @@ ln -sf ~/.dotfiles/wofi ~/.config/wofi
 ln -sf ~/.dotfiles/zathura  ~/.config/zathura
 #ln -sf ~/.dotfiles/hyprdynamicmonitors/ ~/.config/hyprdynamicmonitors
 
-sudo cp -r ./fonts/MapleMonoNL-NF-unhinted/ /usr/share/fonts/
+mkdir -p ~/.local/share/fonts
+cp -r ~/.dotfiles/fonts/MapleMonoNL-NF-unhinted/ ~/.local/share/fonts
+#sudo cp -r ./fonts/MapleMonoNL-NF-unhinted/ /usr/share/fonts/
 
 chmod +x ./network_manager/09-timezone
 sudo cp ./network_manager/09-timezone /etc/NetworkManager/dispatcher.d/
