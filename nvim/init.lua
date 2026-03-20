@@ -67,7 +67,11 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.confirm = true
 
---vim.opt.colorcolumn = "80"
+-- code folding
+vim.opt.foldmethod = "manual"
+vim.opt.fillchars = { fold = " " }
+
+vim.opt.colorcolumn = "80"
 
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 

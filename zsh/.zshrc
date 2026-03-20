@@ -16,7 +16,7 @@ if [[ $TERM != linux ]]; then
   [[ -f ${zsh_plugins}.txt ]] || touch ${zsh_plugins}.txt
 
   # Lazy-load antidote from its functions directory.
-  fpath=(/path/to/antidote/functions $fpath)
+  fpath=(~/.antidtoe/functions $fpath)
   autoload -Uz antidote
 
   # Generate a new static file whenever .zsh_plugins.txt is updated.
