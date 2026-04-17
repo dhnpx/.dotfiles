@@ -42,7 +42,9 @@ return {
 			{
 				"<leader>/",
 				function()
-					Snacks.picker.lines()
+					Snacks.picker.lines({
+						layout = "default",
+					})
 				end,
 				desc = "Buffer Lines",
 			},

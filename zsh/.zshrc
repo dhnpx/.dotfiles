@@ -1,11 +1,13 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+if [[ -o interactive ]] && [[ -n "$DISPLAY$WAYLAND_DISPLAY" ]]; then
+  
+  # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+  # Initialization code that may require console input (password prompts, [y/n]
+  # confirmations, etc.) must go above this block; everything else may go below.
+  #
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
 
-if [[ $TERM != linux ]]; then
   source ~/.antidote/antidote.zsh
   # ${ZDOTDIR:-~}/.zshrc
 
@@ -16,7 +18,7 @@ if [[ $TERM != linux ]]; then
   [[ -f ${zsh_plugins}.txt ]] || touch ${zsh_plugins}.txt
 
   # Lazy-load antidote from its functions directory.
-  fpath=(~/.antidtoe/functions $fpath)
+  fpath=(~/.antidote/functions $fpath)
   autoload -Uz antidote
 
   # Generate a new static file whenever .zsh_plugins.txt is updated.
@@ -28,7 +30,7 @@ if [[ $TERM != linux ]]; then
   source ${zsh_plugins}.zsh
 fi
 
-if [[ $TERM == linux ]]; then
+if [[ -o interactive ]] && [[ -z "$DISPLAY$WAYLAND_DISPLAY" ]]; then
   autoload promptinit compinit
   compinit
   promptinit 
@@ -51,6 +53,8 @@ export PATH=$PATH:~/apps/:~/bin/
 export XCURSOR_PATH=${XCURSOR_PATH}:~/.local/share/icons
 export MOZ_ENABLE_WAYLAND=1
 export EDITOR=/bin/nvim
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
 
 #zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 #zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
@@ -69,7 +73,7 @@ alias diff='diff --color-auto'
 alias ip='ip --color=auto'
 alias nboss='netbird up --management-url https://nb.osscsuf.org:33073 --admin-url https://nb.osscsuf.org'
 
-source <(fzf --zsh)
+source ~/.fzf_zsh
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
@@ -90,12 +94,6 @@ function fd() {
   cd "$dir"
 }
 
-# fnm
-FNM_PATH="/home/hyoon/.local/share/fnm"
-if [ -d "$FNM_PATH" ]; then
-  export PATH="/home/hyoon/.local/share/fnm:$PATH"
-  eval "`fnm env`"
-fi
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

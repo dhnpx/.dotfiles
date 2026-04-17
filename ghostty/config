@@ -42,6 +42,13 @@
 # # Just for example:
 # resize-overlay-duration = 4s 200ms
 
+gtk-custom-css = tabs.css
+
+window-decoration = none
+gtk-wide-tabs = false
+gtk-tabs-location = bottom
+
+
 confirm-close-surface = false
 
 font-family = Maple Mono NL NF

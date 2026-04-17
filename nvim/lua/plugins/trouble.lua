@@ -1,6 +1,19 @@
 return {
 	"folke/trouble.nvim",
-	opts = {}, -- for default options, refer to the configuration section for custom setup.
+	opts = {
+		focus = true,
+		multiline = true,
+		win = {
+			wo = {
+				wrap = true,
+				linebreak = true,
+			},
+		},
+		keys = {
+			j = "next",
+			k = "prev",
+		},
+	}, -- for default options, refer to the configuration section for custom setup.
 	cmd = "Trouble",
 	keys = {
 		{
