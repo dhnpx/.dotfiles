@@ -1,0 +1,4 @@
+# required by app-containers/lxc-6.0.6::gentoo[tools,caps]
+# required by app-containers/waydroid-1.6.2::guru
+# required by waydroid (argument)
+>=sys-libs/libcap-2.78 static-libs

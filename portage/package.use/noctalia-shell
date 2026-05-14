@@ -1,0 +1,10 @@
+# required by gui-apps/noctalia-qs-0.0.10::guru
+# required by gui-apps/noctalia-shell-4.7.1::guru
+# required by gui-apps/noctalia-shell (argument)
+>=dev-qt/qtbase-6.10.2 vulkan accessibility
+>=dev-qt/qtdeclarative-6.10.2 vulkan accessibility
+# required by gui-apps/noctalia-qs-0.0.12::guru[crash-handler]
+# required by gui-apps/noctalia-shell-4.7.6::guru
+# required by @selected
+# required by @world (argument)
+>=dev-cpp/cpptrace-1.0.4-r1 unwind

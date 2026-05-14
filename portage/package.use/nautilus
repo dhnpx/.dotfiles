@@ -1,0 +1,8 @@
+# required by gnome-base/nautilus-49.4::gentoo
+# required by gnome-extra/sushi-46.0::gentoo
+>=dev-libs/libportal-0.9.1 gtk
+# required by app-text/evince-48.1::gentoo
+# required by gnome-extra/sushi-46.0::gentoo
+# required by gnome-base/nautilus-49.4::gentoo[previewer]
+# required by nautilus (argument)
+>=app-text/poppler-26.03.0 cairo

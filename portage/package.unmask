@@ -1,0 +1,3 @@
+# required by sioyek (argument)
+# /etc/portage/package.mask/sioyek:
+=app-text/sioyek-9999
