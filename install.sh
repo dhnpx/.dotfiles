@@ -3,15 +3,15 @@
 mode=$1
 
 rm -rf ~/.config/nvim
-rm -rf ~/.config/hypr
-rm -rf ~/.config/waybar
+#rm -rf ~/.config/hypr
+#rm -rf ~/.config/waybar
 #rm -rf ~/.config/foot
 #rm -rf ~/.wezterm.lua
 rm -rf ~/.zshrc
 #rm -rf ~/.spaceshiprc.zsh
 rm -rf ~/.config/yazi
 rm -rf ~/.config/ghostty
-rm -rf ~/.config/wofi
+#rm -rf ~/.config/wofi
 rm -rf ~/.config/niri
 rm -rf ~/.config/noctalia
 rm ~/bin/tmux_sessionizer
@@ -28,9 +28,9 @@ else
 fi
 
 ln -sf ~/.dotfiles/niri ~/.config/niri
-ln -sf ~/.dotfiles/noctalia/ ~/.config/noctalia/
+ln -sf ~/.dotfiles/noctalia/ ~/.config/noctalia
 ln -sf ~/.dotfiles/nvim ~/.config/nvim
-ln -sf ~/.dotfiles/waybar ~/.config/waybar
+#ln -sf ~/.dotfiles/waybar ~/.config/waybar
 #ln -sf ~/.dotfiles/wezterm/.wezterm.lua ~/.wezterm.lua
 #ln -sf ~/.dotfiles/foot ~/.config/foot
 #ln -sf ~/.dotfiles/Yubico/u2f_keys ~/.config/Yubico/u2f_keys
@@ -42,8 +42,8 @@ ln -sf ~/.dotfiles/tmux/.tmux.conf ~/.tmux.conf
 ln -sf ~/.dotfiles/tmux/tmux_sessionizer ~/bin/tmux_sessionizer
 ln -sf ~/.dotfiles/yazi ~/.config/yazi
 ln -sf ~/.dotfiles/ghostty ~/.config/ghostty
-ln -sf ~/.dotfiles/wofi ~/.config/wofi
-ln -sf ~/.dotfiles/zathura  ~/.config/zathura
+#ln -sf ~/.dotfiles/wofi ~/.config/wofi
+#ln -sf ~/.dotfiles/zathura  ~/.config/zathura
 #ln -sf ~/.dotfiles/hyprdynamicmonitors/ ~/.config/hyprdynamicmonitors
 
 mkdir -p ~/.local/share/fonts

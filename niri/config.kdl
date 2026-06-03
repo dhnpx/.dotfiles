@@ -70,7 +70,7 @@ input {
 }
 
 cursor {
-    xcursor-theme "vimix_cursors"
+    xcursor-theme "Vimix-cursors"
     xcursor-size 32
 }
 
