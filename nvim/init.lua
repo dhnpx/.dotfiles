@@ -44,6 +44,8 @@ vim.o.cursorline = true
 
 vim.o.scrolloff = 10
 
+vim.opt.isfname:append("@-@")
+
 vim.o.confirm = true
 
 vim.o.winborder = 'single'
@@ -72,4 +74,15 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 	callback = function() vim.hl.on_yank({ timeout = 40 }) end,
 })
 
-require('fzf')
+vim.api.nvim_create_autocmd('BufWritePre', {
+    desc = 'Strip trailing whitespace before saving',
+    group = vim.api.nvim_create_augroup('StripTrailingWhitespace', { clear = true }),
+    callback = function() vim.cmd([[%s/\s\+$//e]]) end,
+})
+
+require('plugins.fzf-lua')
+require('plugins.oil')
+require('plugins.tree-sitter-manager')
+require('plugins.blink')
+require('plugins.lsp')
+require('plugins.colorscheme')
