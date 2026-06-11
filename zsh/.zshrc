@@ -1,5 +1,5 @@
 if [[ -o interactive ]] && [[ -n "$DISPLAY$WAYLAND_DISPLAY" ]]; then
-  
+
   # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
   # Initialization code that may require console input (password prompts, [y/n]
   # confirmations, etc.) must go above this block; everything else may go below.
@@ -33,7 +33,7 @@ fi
 if [[ -o interactive ]] && [[ -z "$DISPLAY$WAYLAND_DISPLAY" ]]; then
   autoload promptinit compinit
   compinit
-  promptinit 
+  promptinit
   prompt gentoo
 fi
 
@@ -48,18 +48,21 @@ setopt correctall
 setopt hist_ignore_all_dups
 setopt hist_ignore_space
 
-# for d in ~/bin/*; do PATH="$PATH:$d"; done
-export PATH=$PATH:~/apps/:~/bin/
 export XCURSOR_PATH=${XCURSOR_PATH}:~/.local/share/icons
 export MOZ_ENABLE_WAYLAND=1
 export EDITOR=/bin/nvim
 export VOLTA_HOME="$HOME/.volta"
+
+# for d in ~/bin/*; do PATH="$PATH:$d"; done
+export PATH=$PATH:~/apps/:~/bin/
 export PATH="$VOLTA_HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
 
 #zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
 #zstyle ':completion:*:warnings' format '%BSorry, no matches for: %d%b'
 
 bindkey -s ^f "tmux_sessionizer\n"
+bindkey -e
 
 alias ls='ls --color=auto'
 alias ll='ls -l'
@@ -97,4 +100,3 @@ function fd() {
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-export PATH="$HOME/.diversion/bin:$PATH"
