@@ -2,6 +2,7 @@ vim.pack.add({
 	"https://github.com/mason-org/mason.nvim",
 	"https://github.com/mason-org/mason-lspconfig.nvim",
 	"https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim",
+	"https://github.com/neovim/nvim-lspconfig",
 })
 
 local fzf = require("fzf-lua")
@@ -10,7 +11,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 	group = vim.api.nvim_create_augroup("lsp-attach", { clear = true }),
 	callback = function(event)
 		local client = vim.lsp.get_client_by_id(event.data.client_id)
-		local opts = { buffer = e.buf }
+		local opts = { buffer = event.buf }
 
 		if client and client:supports_method("textDocument/inlayHint", event.buf) then
 			vim.keymap.set("n", "<leader>th", function()
@@ -21,8 +22,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 		vim.keymap.set("n", "gri", fzf.lsp_implementations, opts)
 		vim.keymap.set("n", "grd", fzf.lsp_definitions, opts)
 		vim.keymap.set("n", "gO", fzf.lsp_document_symbols, opts)
-		vim.keymap.set("n", "gW", fzf.lsp_workpsace_symbols, opts)
-		vim.keymap.set("n", "grt", fzf.lsp_type_definitions, opts)
+		vim.keymap.set("n", "gW", fzf.lsp_workspace_symbols, opts)
+		vim.keymap.set("n", "grt", fzf.lsp_typedefs, opts)
 		vim.keymap.set("n", "grD", vim.lsp.buf.declaration, opts)
 		vim.keymap.set("n", "grn", vim.lsp.buf.rename, opts)
 		vim.keymap.set({ "n", "x" }, "gra", vim.lsp.buf.code_action, opts)
