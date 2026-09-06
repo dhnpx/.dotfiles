@@ -34,18 +34,19 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 ---@type table<string, vim.lsp.Config>
 local servers = {
-	clangd = {},
-	gopls = {},
-	pyright = {},
-	stylua = {},
+	clangd = require("lsp.clangd"),
+	gopls = require("lsp.gopls"),
 	lua_ls = require("lsp.lua_ls"),
-	zls = {},
+	zls = require("lsp.zls"),
+	ts_ls = require("lsp.ts_ls"),
 }
 
 require("mason").setup({})
 
 local ensure_installed = vim.tbl_keys(servers or {})
-vim.list_extend(ensure_installed, {})
+vim.list_extend(ensure_installed, {
+	"stylua",
+})
 
 require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 

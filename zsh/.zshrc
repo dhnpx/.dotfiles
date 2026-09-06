@@ -98,3 +98,5 @@ function fd() {
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+eval "$(/home/hyoon/.local/bin/mise activate zsh)" # added by https://mise.run/zsh

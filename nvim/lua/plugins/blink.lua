@@ -7,7 +7,10 @@ local cmp = require("blink.cmp")
 cmp.build():pwait()
 cmp.setup({
 	sources = {
-		default = { "path", "buffer" },
+		default = { "lsp", "path", "buffer" },
 	},
 	fuzzy = { implementation = "prefer_rust_with_warning" },
+	keymap = {
+		preset = "default",
+	},
 })
