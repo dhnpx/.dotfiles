@@ -51,11 +51,9 @@ setopt hist_ignore_space
 export XCURSOR_PATH=${XCURSOR_PATH}:~/.local/share/icons
 export MOZ_ENABLE_WAYLAND=1
 export EDITOR=/bin/nvim
-export VOLTA_HOME="$HOME/.volta"
 
 # for d in ~/bin/*; do PATH="$PATH:$d"; done
 export PATH=$PATH:~/apps/:~/bin/
-export PATH="$VOLTA_HOME/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 
 #zstyle ':completion:*:descriptions' format '%U%B%d%b%u'
